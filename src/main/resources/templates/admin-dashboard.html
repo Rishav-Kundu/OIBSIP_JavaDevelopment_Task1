@@ -1,0 +1,144 @@
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Admin Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+
+    <div class="container-fluid">
+
+        <span class="navbar-brand">
+            Train Reservation System - Admin
+        </span>
+
+        <form th:action="@{/logout}" method="post">
+
+            <button type="submit"
+                    class="btn btn-danger">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+<div class="container mt-5">
+
+    <h1>Admin Dashboard</h1>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-primary">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Trains</h5>
+
+                    <h2 class="text-primary"
+                        th:text="${trainCount}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-success">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Users</h5>
+
+                    <h2 class="text-success"
+                        th:text="${userCount}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow border-warning">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Reservations</h5>
+
+                    <h2 class="text-warning"
+                        th:text="${reservationCount}">
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow mt-4">
+
+        <div class="card-body">
+
+            <h4 class="mb-4">
+
+                Admin Controls
+
+            </h4>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                <a href="/admin/trains"
+                   class="btn btn-primary">
+
+                    Manage Trains
+
+                </a>
+
+                <a href="/admin/users"
+                   class="btn btn-success">
+
+                    Manage Users
+
+                </a>
+
+                <a href="/admin/reservations"
+                   class="btn btn-warning">
+
+                    View Reservations
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+```
