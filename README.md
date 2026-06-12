@@ -184,15 +184,8 @@ https://github.com/Rishav-Kundu/OIBSIP_JavaDevelopment_Task1
 
 ## Demo Video
 
-Add your YouTube or LinkedIn demo video link here.
+[Add your YouTube or LinkedIn demo video link here.
 
-Example:
-
-```
-https://youtu.be/your-video-link
-```
-
----
 
 ## LinkedIn Post
 
