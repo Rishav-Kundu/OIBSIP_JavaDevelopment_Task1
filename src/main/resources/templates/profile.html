@@ -1,112 +1,95 @@
-
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>My Profile</title>
+
+    <title>My Profile | Train Reservation System</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body{
+
+            background:#f5f7fb;
+
+        }
+
+        .navbar{
+
+            box-shadow:0 2px 12px rgba(0,0,0,.12);
+
+        }
+
+        .hero{
+
+            margin-top:35px;
+
+            padding:45px;
+
+            border-radius:20px;
+
+            background:linear-gradient(135deg,#0d6efd,#4f8df7);
+
+            color:white;
+
+        }
+
+        .profile-card{
+
+            margin-top:-30px;
+
+            border:none;
+
+            border-radius:20px;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-    <div class="container-fluid">
+    <div class="container">
 
-        <span class="navbar-brand">
-            My Profile
-        </span>
+        <a class="navbar-brand fw-bold"
+           href="/dashboard">
 
-        <a href="/dashboard"
-           class="btn btn-light">
-            Dashboard
+            Train Reservation System
+
         </a>
 
-    </div>
+        <div class="ms-auto">
 
-</nav>
+            <a href="/dashboard"
+               class="btn btn-light me-2">
 
-<div class="container mt-5">
+                Dashboard
 
-    <div class="card shadow">
+            </a>
 
-        <div class="card-header bg-primary text-white">
+            <form th:action="@{/logout}"
+                  method="post"
+                  style="display:inline;">
 
-            <h3>Profile Details</h3>
+                <button class="btn btn-danger">
 
-        </div>
+                    <i class="bi bi-box-arrow-right"></i>
 
-        <div class="card-body">
-<div th:if="${param.success}"
-     class="alert alert-success alert-dismissible fade show"
-     role="alert">
-
-    Profile updated successfully.
-
-    <button type="button"
-            class="btn-close"
-            data-bs-dismiss="alert">
-    </button>
-
-</div>
-           <form th:action="@{/profile/update}"
-      method="post"
-      th:object="${user}">
-
-                <input type="hidden"
-                       th:field="*{id}">
-
-                <div class="mb-3">
-
-                    <label>Name</label>
-
-                    <input type="text"
-                           th:field="*{name}"
-                           class="form-control"
-                           required>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>Email</label>
-
-                    <input type="email"
-                           th:field="*{email}"
-                           class="form-control"
-                           readonly>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>Phone</label>
-
-                    <input type="text"
-                           th:field="*{phone}"
-                           class="form-control"
-                           required>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>New Password</label>
-
-                    <input type="password"
-                           name="password"
-                           class="form-control">
-
-                    <small class="text-muted">
-                        Leave blank to keep current password
-                    </small>
-
-                </div>
-
-                <button type="submit"
-                        class="btn btn-success">
-
-                    Update Profile
+                    Logout
 
                 </button>
 
@@ -116,7 +99,170 @@
 
     </div>
 
+</nav>
+
+<div class="container">
+
+    <div class="hero shadow">
+
+        <h1>
+
+            My Profile
+
+        </h1>
+
+        <p class="lead mt-3">
+
+            Manage your personal information and keep your account details up to date.
+
+        </p>
+
+    </div>
+
+    <div class="card shadow profile-card">
+
+        <div class="card-body p-4">
+
+            <h3 class="mb-4">
+
+                <i class="bi bi-person-circle"></i>
+
+                Profile Details
+
+            </h3>
+
+            <div th:if="${param.success}"
+                 class="alert alert-success alert-dismissible fade show"
+                 role="alert">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Profile updated successfully.
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+
+                </button>
+
+            </div>
+
+            <form th:action="@{/profile/update}"
+                  method="post"
+                  th:object="${user}">
+
+                <input type="hidden"
+                       th:field="*{id}">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Full Name
+
+                        </label>
+
+                        <input type="text"
+                               th:field="*{name}"
+                               class="form-control"
+                               required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Email Address
+
+                        </label>
+
+                        <input type="email"
+                               th:field="*{email}"
+                               class="form-control"
+                               readonly>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            Phone Number
+
+                        </label>
+
+                        <input type="text"
+                               th:field="*{phone}"
+                               class="form-control"
+                               required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+
+                            New Password
+
+                        </label>
+
+                        <input type="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Leave blank to keep current password">
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-info">
+
+                    <i class="bi bi-info-circle-fill"></i>
+
+                    Leave the password field empty if you do not wish to change your current password.
+
+                </div>
+
+                <div class="d-grid">
+
+                    <button type="submit"
+                            class="btn btn-success btn-lg">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Update Profile
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </div>
+
+<footer class="bg-dark text-white mt-5">
+
+    <div class="container py-4 text-center">
+
+        © 2026 Train Reservation System
+
+    </div>
+
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>

@@ -1,129 +1,304 @@
+
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Manage Trains</title>
 
-```
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet">
-```
+<head>
+
+    <title>Manage Trains | Admin</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body{
+
+            background:#f5f7fb;
+
+        }
+
+        .navbar{
+
+            box-shadow:0 2px 12px rgba(0,0,0,.15);
+
+        }
+
+        .hero{
+
+            margin-top:35px;
+
+            background:linear-gradient(135deg,#212529,#495057);
+
+            color:white;
+
+            padding:45px;
+
+            border-radius:20px;
+
+        }
+
+        .table-card{
+
+            margin-top:-30px;
+
+            border:none;
+
+            border-radius:20px;
+
+        }
+
+    </style>
 
 </head>
+
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-```
-    <span class="navbar-brand">
-        Train Reservation System - Admin
-    </span>
+    <div class="container">
 
-    <a href="/admin/dashboard"
-       class="btn btn-light">
-        Dashboard
-    </a>
+        <a class="navbar-brand fw-bold"
+           href="/admin/dashboard">
 
-</div>
-```
+            Train Reservation System - Admin
+
+        </a>
+
+        <div class="ms-auto">
+
+            <a href="/admin/dashboard"
+               class="btn btn-light me-2">
+
+                Dashboard
+
+            </a>
+
+            <form th:action="@{/logout}"
+                  method="post"
+                  style="display:inline;">
+
+                <button class="btn btn-danger">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </nav>
 
-<div class="container mt-5">
+<div class="container">
 
-```
-<div class="d-flex justify-content-between mb-3">
+    <div class="hero shadow">
 
-    <h2>Manage Trains</h2>
+        <h1>
 
-    <a href="/admin/trains/add"
-       class="btn btn-success">
-        Add Train
-    </a>
+            Train Management
+
+        </h1>
+
+        <p class="lead mt-3">
+
+            Create, edit, delete and manage trains available in the reservation system.
+
+        </p>
+
+    </div>
+
+    <div class="card shadow table-card">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+            <h4 class="mb-0">
+
+                Available Trains
+
+            </h4>
+
+            <a href="/admin/trains/add"
+               class="btn btn-success">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Add Train
+
+            </a>
+
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Train No</th>
+
+                        <th>Name</th>
+
+                        <th>Type</th>
+
+                        <th>Base Fare</th>
+
+                        <th>Fare / Station</th>
+
+                        <th>Source</th>
+
+                        <th>Destination</th>
+
+                        <th>Departure</th>
+
+                        <th>Arrival</th>
+
+                        <th>Seats</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="train : ${trains}">
+
+                        <td class="fw-semibold"
+                            th:text="${train.trainNo}">
+                        </td>
+
+                        <td th:text="${train.trainName}">
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-info text-dark"
+                                  th:text="${train.trainType}">
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            ₹<span th:text="${train.baseFare}"></span>
+
+                        </td>
+
+                        <td>
+
+                            ₹<span th:text="${train.farePerStation}"></span>
+
+                        </td>
+
+                        <td th:text="${train.sourceStation}">
+                        </td>
+
+                        <td th:text="${train.destinationStation}">
+                        </td>
+
+                        <td th:text="${train.departureTime}">
+                        </td>
+
+                        <td th:text="${train.arrivalTime}">
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                <span th:text="${train.availableSeats}"></span>
+
+                            </span>
+
+                            /
+
+                            <span th:text="${train.totalSeats}"></span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex flex-wrap gap-1">
+
+                                <a th:href="@{/admin/trains/{id}/routes(id=${train.id})}"
+                                   class="btn btn-info btn-sm">
+
+                                    <i class="bi bi-signpost-split"></i>
+
+                                    Routes
+
+                                </a>
+
+                                <a th:href="@{/admin/trains/edit/{id}(id=${train.id})}"
+                                   class="btn btn-warning btn-sm">
+
+                                    <i class="bi bi-pencil-square"></i>
+
+                                    Edit
+
+                                </a>
+
+                                <a th:href="@{/admin/trains/delete/{id}(id=${train.id})}"
+                                   class="btn btn-danger btn-sm"
+
+                                   onclick="return confirm('Delete this train?')">
+
+                                    <i class="bi bi-trash"></i>
+
+                                    Delete
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-<table class="table table-bordered table-hover">
+<footer class="bg-dark text-white mt-5">
 
-    <thead class="table-dark">
+    <div class="container py-4 text-center">
 
-    <tr>
-        <th>Train No</th>
-        <th>Train Name</th>
-        <th>Type</th>
-        <th>Base Fare</th>
-        <th>Fare / Station</th>
-        <th>Source</th>
-        <th>Destination</th>
-        <th>Departure</th>
-        <th>Arrival</th>
-        <th>Seats</th>
-        <th>Actions</th>
-    </tr>
+        © 2026 Train Reservation System | Administrator Panel
 
-    </thead>
+    </div>
 
-    <tbody>
+</footer>
 
-    <tr th:each="train : ${trains}">
-
-        <td th:text="${train.trainNo}"></td>
-
-        <td th:text="${train.trainName}"></td>
-
-        <td th:text="${train.trainType}"></td>
-
-        <td>
-            ₹<span th:text="${train.baseFare}"></span>
-        </td>
-
-        <td>
-            ₹<span th:text="${train.farePerStation}"></span>
-        </td>
-
-        <td th:text="${train.sourceStation}"></td>
-
-        <td th:text="${train.destinationStation}"></td>
-
-        <td th:text="${train.departureTime}"></td>
-
-        <td th:text="${train.arrivalTime}"></td>
-
-        <td>
-            <span th:text="${train.availableSeats}"></span>
-            /
-            <span th:text="${train.totalSeats}"></span>
-        </td>
-
-        <td>
-
-            <a th:href="@{/admin/trains/{id}/routes(id=${train.id})}"
-               class="btn btn-info btn-sm">
-                Routes
-            </a>
-
-            <a th:href="@{/admin/trains/edit/{id}(id=${train.id})}"
-               class="btn btn-warning btn-sm">
-                Edit
-            </a>
-
-            <a th:href="@{/admin/trains/delete/{id}(id=${train.id})}"
-               class="btn btn-danger btn-sm"
-               onclick="return confirm('Delete this train?')">
-                Delete
-            </a>
-
-        </td>
-
-    </tr>
-
-    </tbody>
-
-</table>
-```
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
+
+

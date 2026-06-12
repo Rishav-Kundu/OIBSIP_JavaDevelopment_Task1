@@ -1,36 +1,122 @@
 
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <title>Search Trains</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        .card{
+
+    transition:.25s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 24px rgba(0,0,0,.15);
+
+}
+
+        body{
+
+            background:#f5f7fb;
+
+        }
+
+        .navbar{
+
+            box-shadow:0 2px 12px rgba(0,0,0,.12);
+
+        }
+
+        .hero{
+
+            background:linear-gradient(135deg,#0d6efd,#4f8df7);
+
+            color:white;
+
+            padding:45px;
+
+            border-radius:20px;
+
+            margin-top:35px;
+
+        }
+
+        .hero h1{
+
+            font-weight:bold;
+
+        }
+
+        .search-card{
+
+            margin-top:-35px;
+
+            border:none;
+
+            border-radius:20px;
+
+        }
+
+        .table{
+
+            background:white;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
     <div class="container">
 
-        <a class="navbar-brand" href="/dashboard">
+        <a class="navbar-brand fw-bold"
+           href="/dashboard">
+
             Train Reservation System
+
         </a>
 
         <div class="ms-auto">
 
             <a href="/dashboard"
                class="btn btn-light me-2">
+
                 Dashboard
+
             </a>
 
             <form th:action="@{/logout}"
                   method="post"
                   style="display:inline;">
 
-                <button type="submit"
-                        class="btn btn-danger">
+                <button class="btn btn-danger">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
                     Logout
+
                 </button>
 
             </form>
@@ -41,48 +127,83 @@
 
 </nav>
 
-<div class="container mt-5">
+<div class="container">
 
-    <div class="card shadow mb-5">
+    <div class="hero shadow">
 
-        <div class="card-header bg-primary text-white">
+        <h1>
 
-            <h4>Search Trains</h4>
+            Find Your Perfect Train
 
-        </div>
+        </h1>
 
-        <div class="card-body">
+        <p class="lead mt-3">
 
-            <form th:action="@{/search}" method="get">
+            Search routes, compare fares and reserve your seat instantly.
 
-                <div class="row">
+        </p>
+
+    </div>
+
+    <div class="card shadow search-card">
+
+        <div class="card-body p-4">
+
+            <h3 class="mb-4">
+
+                Search Trains
+
+            </h3>
+
+            <form th:action="@{/search}"
+                  method="get">
+
+                <div class="row g-3">
 
                     <div class="col-md-5">
 
-                        <label>From Station</label>
+                        <label class="form-label">
+
+                            From Station
+
+                        </label>
 
                         <input type="text"
                                name="from"
                                class="form-control"
+                               placeholder="Enter source station"
                                required>
 
                     </div>
 
                     <div class="col-md-5">
 
-                        <label>To Station</label>
+                        <label class="form-label">
+
+                            To Station
+
+                        </label>
 
                         <input type="text"
                                name="to"
                                class="form-control"
+                               placeholder="Enter destination station"
                                required>
 
                     </div>
 
-                    <div class="col-md-2 d-flex align-items-end">
+                    <div class="col-md-2 d-grid">
+
+                        <label class="form-label invisible">
+
+                            Search
+
+                        </label>
 
                         <button type="submit"
-                                class="btn btn-success w-100">
+                                class="btn btn-success">
+
+                            <i class="bi bi-search"></i>
 
                             Search
 
@@ -99,158 +220,368 @@
     </div>
 
     <div th:if="${results != null and #lists.isEmpty(results)}"
-         class="alert alert-warning">
+         class="alert alert-warning mt-4">
 
         No trains found for the selected route.
 
     </div>
+<div th:if="${results != null and !#lists.isEmpty(results)}"
+     class="mt-5">
 
-    <div th:if="${results != null and !#lists.isEmpty(results)}">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-        <h2 class="mb-3">
+        <h2 class="fw-bold">
 
             Search Results
 
         </h2>
 
-        <table class="table table-bordered table-hover">
+        <span class="badge bg-success fs-6">
 
-            <thead class="table-success">
+            <span th:text="${#lists.size(results)}"></span>
+            Train(s) Found
 
-            <tr>
-
-                <th>Train No</th>
-                <th>Train Name</th>
-                <th>Type</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Fare</th>
-                <th>Available Seats</th>
-                <th>Action</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody>
-
-            <tr th:each="result : ${results}">
-
-                <td th:text="${result.train.trainNo}"></td>
-
-                <td th:text="${result.train.trainName}"></td>
-
-                <td th:text="${result.train.trainType}"></td>
-
-                <td th:text="${result.fromStation}"></td>
-
-                <td th:text="${result.toStation}"></td>
-
-                <td>
-
-                    ₹<span th:text="${result.fare}"></span>
-
-                </td>
-
-                <td th:text="${result.train.availableSeats}"></td>
-
-                <td>
-
-                    <a
-                            th:if="${result.train.availableSeats > 0}"
-                            th:href="@{/reserve/{id}
-                            (id=${result.train.id},
-                            from=${result.fromStation},
-                            to=${result.toStation},
-                            fare=${result.fare})}"
-                            class="btn btn-primary btn-sm">
-
-                        Book Ticket
-
-                    </a>
-
-                    <button
-                            th:if="${result.train.availableSeats <= 0}"
-                            class="btn btn-secondary btn-sm"
-                            disabled>
-
-                        Sold Out
-
-                    </button>
-
-                </td>
-
-            </tr>
-
-            </tbody>
-
-        </table>
+        </span>
 
     </div>
 
-    <hr class="my-5">
+    <div class="card shadow border-0">
 
-    <h2 class="mb-4">
+        <div class="card-body p-0">
 
-        Available Trains
+            <div class="table-responsive">
 
-    </h2>
+                <table class="table table-hover align-middle mb-0">
 
-    <table class="table table-bordered table-hover">
+                    <thead class="table-primary">
 
-        <thead class="table-dark">
+                    <tr>
 
-        <tr>
+                        <th>Train No</th>
+                        <th>Train Name</th>
+                        <th>Type</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Fare</th>
+                        <th>Seats</th>
+                        <th class="text-center">Action</th>
 
-            <th>Train No</th>
-            <th>Train Name</th>
-            <th>Type</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Seats</th>
+                    </tr>
 
-        </tr>
+                    </thead>
 
-        </thead>
+                    <tbody>
 
-        <tbody>
+                    <tr th:each="result : ${results}">
 
-        <tr th:each="train : ${trains}">
+                        <td th:text="${result.train.trainNo}"></td>
 
-            <td th:text="${train.trainNo}"></td>
+                        <td class="fw-semibold"
+                            th:text="${result.train.trainName}"></td>
 
-            <td th:text="${train.trainName}"></td>
+                        <td th:text="${result.train.trainType}"></td>
 
-            <td th:text="${train.trainType}"></td>
+                        <td th:text="${result.fromStation}"></td>
 
-            <td th:text="${train.sourceStation}"></td>
+                        <td th:text="${result.toStation}"></td>
 
-            <td th:text="${train.destinationStation}"></td>
+                        <td>
 
-            <td th:text="${train.departureTime}"></td>
+                            ₹<span th:text="${result.fare}"></span>
 
-            <td th:text="${train.arrivalTime}"></td>
+                        </td>
 
-            <td th:text="${train.availableSeats}"></td>
+                        <td>
 
-        </tr>
+                            <span
+                                    th:if="${result.train.availableSeats>10}"
+                                    class="badge bg-success">
 
-        </tbody>
+                                <span th:text="${result.train.availableSeats}"></span>
 
-    </table>
+                            </span>
+
+                            <span
+                                    th:if="${result.train.availableSeats<=10 && result.train.availableSeats>0}"
+                                    class="badge bg-warning text-dark">
+
+                                Only
+                                <span th:text="${result.train.availableSeats}"></span>
+                                Left
+
+                            </span>
+
+                            <span
+                                    th:if="${result.train.availableSeats<=0}"
+                                    class="badge bg-danger">
+
+                                Sold Out
+
+                            </span>
+
+                        </td>
+
+                        <td class="text-center">
+
+                            <a
+                                    th:if="${result.train.availableSeats>0}"
+
+                                    th:href="@{/reserve/{id}
+                                    (
+                                    id=${result.train.id},
+                                    from=${result.fromStation},
+                                    to=${result.toStation},
+                                    fare=${result.fare}
+                                    )}"
+
+                                    class="btn btn-primary btn-sm">
+
+                                Book Ticket
+
+                            </a>
+
+                            <button
+
+                                    th:if="${result.train.availableSeats<=0}"
+
+                                    class="btn btn-secondary btn-sm"
+
+                                    disabled>
+
+                                Sold Out
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-<footer class="bg-dark text-white text-center mt-5 p-3">
+<hr class="my-5">
 
-    © 2026 Train Reservation System
+<section class="mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            Available Trains
+
+        </h2>
+
+        <span class="text-muted">
+
+            Live train inventory
+
+        </span>
+
+    </div>
+
+    <div class="card shadow border-0">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Train No</th>
+                        <th>Train Name</th>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Seats</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="train : ${trains}">
+
+                        <td th:text="${train.trainNo}"></td>
+
+                        <td class="fw-semibold"
+                            th:text="${train.trainName}"></td>
+
+                        <td th:text="${train.trainType}"></td>
+
+                        <td th:text="${train.sourceStation}"></td>
+
+                        <td th:text="${train.destinationStation}"></td>
+
+                        <td th:text="${train.departureTime}"></td>
+
+                        <td th:text="${train.arrivalTime}"></td>
+
+                        <td>
+
+                            <span
+                                    th:if="${train.availableSeats>10}"
+                                    class="badge bg-success">
+
+                                <span th:text="${train.availableSeats}"></span>
+
+                            </span>
+
+                            <span
+                                    th:if="${train.availableSeats<=10 && train.availableSeats>0}"
+                                    class="badge bg-warning text-dark">
+
+                                <span th:text="${train.availableSeats}"></span>
+
+                            </span>
+
+                            <span
+                                    th:if="${train.availableSeats<=0}"
+                                    class="badge bg-danger">
+
+                                Sold Out
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="bg-dark text-white mt-5">
+
+    <div class="container py-5">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <h4>
+
+                    Train Reservation System
+
+                </h4>
+
+                <p class="text-light">
+
+                    Search trains, reserve tickets and manage your journeys
+                    through one modern platform.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li>
+
+                        <a href="/dashboard"
+                           class="text-white text-decoration-none">
+
+                            Dashboard
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="/my-reservations"
+                           class="text-white text-decoration-none">
+
+                            Reservations
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="/profile"
+                           class="text-white text-decoration-none">
+
+                            Profile
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <h5>
+
+                    Features
+
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li>Train Search</li>
+
+                    <li>Ticket Booking</li>
+
+                    <li>PNR Cancellation</li>
+
+                    <li>User Dashboard</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+
+            © 2026 Train Reservation System
+
+        </div>
+
+    </div>
 
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>
-
-
-

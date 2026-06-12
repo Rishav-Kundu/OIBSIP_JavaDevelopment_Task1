@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+```gitignore
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+```
